@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <h1>
+        Detecting Inconsitencies App
+    </h1>
+    <button id="camera-btn">
+        Activate Detection Camera Here
+    </button>
+    <video id="video" autoplay></video>
+    <script>
+        document.getElementById('camera-btn').addEventListener('click', function() {
+            const video = document.getElementById('video');
+            video.style.display='block'
+
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: { facingMode : { exact : 'environment' } } })
+                    .then(function(stream) {
+                        video.srcObject = stream;
+                        video.play();
+                    })
+                    .catch(function(error) {
+                        console.error("Error accessing the camera: ", error);
+                    });
+            } else {
+                alert('Sorry, your browser does not support accessing the camera.');
+            }
+        });
+    </script>
+</body>
+</html>
