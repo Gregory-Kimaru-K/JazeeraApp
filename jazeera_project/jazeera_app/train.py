@@ -12,7 +12,7 @@ model = Sequential([
     MaxPooling2D((2,2)),
     Flatten(),
     Dense(128, activation='relu'),
-    Dense(2, activation='softmax')
+    Dense(3, activation='softmax')
 ])
 
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
