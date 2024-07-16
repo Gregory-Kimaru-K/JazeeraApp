@@ -1,2 +1,3 @@
 venv/
 jazeera_project/jazeera_project/.env
+jazeera_project/jazeera_app/wall_inspection_model.keras

@@ -32,7 +32,7 @@ while True:
         prediction_label = 'Normal wall'
 
     cv2.putText(frame, prediction_label, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
-    cv2.imshow('Wall inspection', frame)
+    cv2.imshow('Wall inspection programme(press q to quit)', frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
