@@ -24,4 +24,3 @@ validation_generator=datagen.flow_from_directory(
     batch_size=32,
     class_mode='categorical'
 )
-

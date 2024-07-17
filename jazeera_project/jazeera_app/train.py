@@ -19,7 +19,7 @@ model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accur
 
 model.fit(
     train_generator,
-    epochs = 10,
+    epochs = 15,
     validation_data=validation_generator
 )
 

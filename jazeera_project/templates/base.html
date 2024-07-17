@@ -1,37 +1,49 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <title>Wall Inspection</title>
 </head>
 <body>
-    <h1>
-        Detecting Inconsitencies App
-    </h1>
-    <button id="camera-btn">
-        Activate Detection Camera Here
-    </button>
-    <video id="video" autoplay></video>
-    <script>
-        document.getElementById('camera-btn').addEventListener('click', function() {
-            const video = document.getElementById('video');
-            video.style.display='block'
+    <h1>Wall Inspection</h1>
+    <video id="video" width="640" height="480" autoplay></video>
+    <button id="snap">Snap Photo</button>
+    <canvas id="canvas" width="640" height="480"></canvas>
+    <button id="predict">Predict</button>
+    <p id="result"></p>
 
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                navigator.mediaDevices.getUserMedia({ video: { facingMode : { exact : 'environment' } } })
-                    .then(function(stream) {
-                        video.srcObject = stream;
-                        video.play();
-                    })
-                    .catch(function(error) {
-                        console.error("Error accessing the camera: ", error);
-                    });
-            } else {
-                alert('Sorry, your browser does not support accessing the camera.');
-            }
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        const snap = document.getElementById('snap');
+        const predict = document.getElementById('predict');
+        const result = document.getElementById('result');
+
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+            .then(stream => {
+                video.srcObject = stream;
+            })
+            .catch(err => {
+                console.error('Error accessing the camera: ', err);
+            });
+
+        snap.addEventListener('click', () => {
+            context.drawImage(video, 0, 0, 640, 480);
+        });
+
+        predict.addEventListener('click', async () => {
+            const image = canvas.toDataURL('image/jpeg');
+            const response = await fetch('/predict/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ image }),
+            });
+            const data = await response.json();
+            result.textContent = data.message;
         });
     </script>
 </body>
