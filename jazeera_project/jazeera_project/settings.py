@@ -123,7 +123,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = [BASE_DIR, 'static']
+STATICFILES_DIRS = [BASE_DIR, 'jazeera_project/static']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -134,3 +134,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MODEL_PATH = os.path.join(BASE_DIR, 'jazeera_app', 'wall_inspection_model.keras')
 OUTPUT_PATH =os.path.join(BASE_DIR, 'static', 'models')
+
+APPEND_SLASH = False
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10 MB

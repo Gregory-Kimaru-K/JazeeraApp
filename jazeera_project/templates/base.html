@@ -11,7 +11,9 @@
     <button id="snap">Snap Photo</button>
     <canvas id="canvas" width="640" height="480"></canvas>
     <button id="predict">Predict</button>
+    <button id="visualize" style="display: none;">Visualize</button>
     <p id="result"></p>
+    <img id="visualized-image" style="display: none;" />
 
     <script>
         const video = document.getElementById('video');
@@ -19,7 +21,9 @@
         const context = canvas.getContext('2d');
         const snap = document.getElementById('snap');
         const predict = document.getElementById('predict');
+        const visualize = document.getElementById('visualize');
         const result = document.getElementById('result');
+        const visualizedImage = document.getElementById('visualized-image');
 
         navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
             .then(stream => {
@@ -44,6 +48,26 @@
             });
             const data = await response.json();
             result.textContent = data.message;
+
+            if (data.message === '0' || data.message === '1') {
+                visualize.style.display = 'block';
+            } else {
+                visualize.style.display = 'none';
+            }
+        });
+
+        visualize.addEventListener('click', async () => {
+            const image = canvas.toDataURL('image/jpeg');
+            const response = await fetch('/visualize/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ image }),
+            });
+            const data = await response.json();
+            visualizedImage.src = 'data:image/jpeg;base64,' + data.visualized_image;
+            visualizedImage.style.display = 'block';
         });
     </script>
 </body>
